@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTFGame</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <section>
+      <button onclick="goBack()">⬅ Retour</button>
+      <h2>Aide</h2>
+      <h4>1. Si un problème est survenu, alors le signaler sur le padlet de la classe</h4>
+   </section>
+</body>
+<style>
+   body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(270deg, #00E8C5, #00F5FA, #00A7FA, #005CFA);
+  background-size: 400% 400%;
+  animation: gradientMove 40s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+<script>
+function goBack(){
+   window.location.href = "index.html"
+}
+</script>
+</html>

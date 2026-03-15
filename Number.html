@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Nombre Mystère</title>
+
+<style>
+
+body{
+  margin:0;
+  padding:0;
+  text-align:center;
+  font-family:Arial, sans-serif;
+
+  background: linear-gradient(270deg, #00E8C5, #00F5FA, #00A7FA, #005CFA);
+  background-size: 400% 400%;
+  animation: gradientMove 40s ease infinite;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+input, button{
+  padding:10px;
+  margin:5px;
+  font-size:16px;
+}
+
+#classement{
+  margin-top:20px;
+}
+
+/* bouton secret */
+#secretReset{
+  position:fixed;
+  bottom:10px;
+  right:10px;
+  width:20px;
+  height:20px;
+  border:none;
+  background:transparent;
+  opacity:0.05;
+  cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🔢 Nombre Mystère</h1>
+
+<h2 id="welcome"></h2>
+
+<p>Devine le nombre entre 1 et 100</p>
+
+<input id="guess" type="number" placeholder="Nombre">
+
+<br>
+
+<button onclick="checkNumber()">Deviner</button>
+<button onclick="restart()">Rejouer</button>
+<button onclick="goBack()">⬅ Retour</button>
+
+<p id="message"></p>
+
+<p>Essais : <span id="tries">0</span></p>
+<p>🏆 Ton record : <span id="record">Aucun</span></p>
+
+<h2>🏆 Classement</h2>
+<ol id="classement"></ol>
+
+<button id="secretReset" onclick="resetScores()"></button>
+
+<script>
+
+/* récupérer le nom */
+let rawName = localStorage.getItem("playerName") || "Joueur"
+let playerName = rawName.toLowerCase()
+
+document.getElementById("welcome").textContent =
+"Bienvenue " + rawName
+
+let secretNumber = Math.floor(Math.random()*100)+1
+let tries = 0
+
+let scores = JSON.parse(localStorage.getItem("scores")) || {}
+
+showRecord()
+updateClassement()
+
+function showRecord(){
+
+if(scores[playerName]){
+document.getElementById("record").textContent =
+scores[playerName] + " essais"
+}else{
+document.getElementById("record").textContent = "Aucun"
+}
+
+}
+
+function checkNumber(){
+
+let guess = document.getElementById("guess").value
+
+tries++
+document.getElementById("tries").textContent = tries
+
+if(guess == secretNumber){
+
+document.getElementById("message").textContent =
+"🎉 Bravo " + rawName + " !"
+
+if(!scores[playerName] || tries < scores[playerName]){
+
+scores[playerName] = tries
+localStorage.setItem("scores", JSON.stringify(scores))
+
+}
+
+showRecord()
+updateClassement()
+
+}
+
+else if(guess < secretNumber){
+document.getElementById("message").textContent = "📉 Trop petit"
+}
+else{
+document.getElementById("message").textContent = "📈 Trop grand"
+}
+
+}
+
+function updateClassement(){
+
+let classement = document.getElementById("classement")
+
+let sorted = Object.entries(scores)
+.sort((a,b)=>a[1]-b[1])
+
+classement.innerHTML = ""
+
+sorted.forEach((player, index)=>{
+
+let li = document.createElement("li")
+
+let medal = ""
+
+if(index === 0) medal = "🥇 "
+else if(index === 1) medal = "🥈 "
+else if(index === 2) medal = "🥉 "
+
+li.textContent = medal + player[0] + " - " + player[1] + " essais"
+
+classement.appendChild(li)
+
+})
+
+}
+
+function restart(){
+
+secretNumber = Math.floor(Math.random()*100)+1
+tries = 0
+
+document.getElementById("tries").textContent = 0
+document.getElementById("message").textContent = ""
+document.getElementById("guess").value = ""
+
+}
+
+function goBack(){
+
+window.location.href = "index.html"
+
+}
+
+/* bouton secret */
+
+function resetScores(){
+
+let confirmReset = confirm("🥚 Easter Egg trouvé ! Réinitialiser le classement ?")
+
+if(confirmReset){
+
+localStorage.removeItem("scores")
+
+alert("Classement supprimé")
+
+location.reload()
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

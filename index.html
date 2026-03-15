@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTFGame</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <section>
+      <button onclick="startHelp()" style="position:absolute; right:0px; top:0px;">Aide</button>
+      <h2>Votre Prénom</h2>
+      <input type="text" id="name" placeholder="Écris ton prénom" value="">
+      <button onclick="startNombre()">Trouve le Nombre</button>
+      <h3 onclick="startNombre()">Ce Jeu N'existe Pas Encore !</h3>
+   </section>
+<script>
+function startNombre(){
+
+let name = document.getElementById("name").value
+
+localStorage.setItem("playerName", name)
+
+window.location.href = "Number.html"
+
+}
+
+function startHelp(){
+
+   window.location.href = "Help.html"
+}
+</script>
+</body>
+</html>
